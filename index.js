@@ -37,11 +37,11 @@ async function run() {
     })
 
     app.get("/running-campaign/:id",async(req,res)=>{
-        const id = req.params.id;
-        const query = {_id:ObjectId(id)};
-        const result = await find(query);
-        res.send(result);
-    })
+    const id = req.params.id;
+    const query = {_id:new ObjectId(id)};
+    const result = await campaignCollection.findOne(query);
+    res.send(result);
+  })
 
 
 
