@@ -36,10 +36,16 @@ async function run() {
         res.send(result);
     })
 
-    app.get("/running-campaign/:id",async(req,res)=>{
+    app.get("/all/:id",async(req,res)=>{
     const id = req.params.id;
     const query = {_id:new ObjectId(id)};
     const result = await campaignCollection.findOne(query);
+    res.send(result);
+  })
+
+  app.get("/all",async(req,res)=>{
+    const campaign = campaignCollection.find();
+    const result = await campaign.toArray();
     res.send(result);
   })
 
