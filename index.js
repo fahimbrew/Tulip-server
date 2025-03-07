@@ -56,6 +56,18 @@ async function run() {
     res.send(result);
   })
 
+  app.get("/myCampaign/:email", async (req, res) => {
+    try {
+      const email = req.params.email;
+      const query = { email: email };
+  
+      const campaigns = await myCampaignCollection.find(query).toArray();
+      res.send(campaigns);
+    } catch (error) {
+      res.status(500).send({ error: "Failed to fetch campaigns" });
+    }
+  });
+
 
 
 
