@@ -29,6 +29,7 @@ async function run() {
     await client.connect();
     
     const campaignCollection = client.db("campaignDB").collection("campaigns");
+    const myCampaignCollection = client.db("campaignDB").collection("personal")
 
     app.get("/running-campaign",async(req,res)=>{
         const campaign = campaignCollection.find().limit(6);
@@ -46,6 +47,12 @@ async function run() {
   app.get("/all",async(req,res)=>{
     const campaign = campaignCollection.find();
     const result = await campaign.toArray();
+    res.send(result);
+  })
+
+  app.post("/myCampaign",async(req,res)=>{
+    const newCampaign = req.body;
+    const result = await myCampaignCollection.insertOne(newCampaign);
     res.send(result);
   })
 
