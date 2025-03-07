@@ -68,12 +68,29 @@ async function run() {
     }
   });
 
-  app.delete("myCampaign/:id",async(req,res)=>{
-    const id = req.params.id;
-    const filter = {_id:new ObjectId(id)};
-    const result = await myCampaignCollection.deleteOne(filter);
-    res.send(result);
-  })
+  app.delete("/myCampaign/:id", async (req, res) => {
+    try {
+        const id = req.params.id;
+
+        // Validate ObjectId format
+        if (!ObjectId.isValid(id)) {
+            return res.status(400).json({ error: "Invalid campaign ID format" });
+        }
+
+        const filter = { _id: new ObjectId(id) };
+        const result = await myCampaignCollection.deleteOne(filter);
+
+        if (result.deletedCount === 1) {
+            res.json({ success: true, message: "Campaign deleted successfully!" });
+        } else {
+            res.status(404).json({ error: "Campaign not found!" });
+        }
+    } catch (error) {
+        console.error("Error deleting campaign:", error);
+        res.status(500).json({ error: "Failed to delete campaign" });
+    }
+});
+
 
 
 
