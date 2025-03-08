@@ -68,6 +68,34 @@ async function run() {
     }
   });
 
+  app.get("/myCampaigns/:id",async(req,res)=>{
+    const id = req.params.id;
+    const query = {_id : new ObjectId(id)};
+    const result = await myCampaignCollection.findOne(query);
+    res.send(result);
+  })
+
+  app.patch("/myCampaigns/:id",async(req,res)=>{
+    const id = req.params.id;
+    const filter = {_id : new ObjectId(id)};
+    const update = req.body;
+    const docs = {
+        $set:{
+            image:update.image,
+            title:update.title,
+            category:update.category,
+            description:update.description,
+            goalAmount:update.goalAmount,
+            deadline:update.deadline,
+            email:update.email,
+            username:update.username,
+
+        }
+    }
+    const result = await myCampaignCollection.updateOne(filter,docs);
+    res.send(result);
+  })
+
   app.delete("/myCampaign/:id", async (req, res) => {
     try {
         const id = req.params.id;
