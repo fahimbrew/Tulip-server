@@ -29,7 +29,8 @@ async function run() {
     await client.connect();
     
     const campaignCollection = client.db("campaignDB").collection("campaigns");
-    const myCampaignCollection = client.db("campaignDB").collection("personal")
+    const myCampaignCollection = client.db("campaignDB").collection("personal");
+    const donateCollection = client.db("campaignDB").collection("donate");
 
     app.get("/running-campaign",async(req,res)=>{
         const campaign = campaignCollection.find().limit(6);
@@ -118,6 +119,28 @@ async function run() {
         res.status(500).json({ error: "Failed to delete campaign" });
     }
 });
+
+// donate 
+
+app.post("/donate",async(req,res)=>{
+    const donation = req.body;
+    const result = await donateCollection.insertOne(donation);
+    res.send(result); 
+})
+
+app.get("/donate",async(req,res)=>{
+    const donation = donateCollection.find();
+    const result = await donation.toArray();
+    res.send(result)
+})
+
+app.get("/donate/:email", async (req, res) => {
+    const email = req.params.email;
+    const filter = { email: email };
+    const result = await donateCollection.find(filter).toArray(); // Fetch all donations as an array
+    res.send(result);
+});
+
 
 
 
