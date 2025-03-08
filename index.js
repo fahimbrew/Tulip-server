@@ -137,7 +137,7 @@ app.get("/donate",async(req,res)=>{
 app.get("/donate/:email", async (req, res) => {
     const email = req.params.email;
     const filter = { email: email };
-    const result = await donateCollection.find(filter).toArray(); // Fetch all donations as an array
+    const result = await donateCollection.find(filter).toArray();
     res.send(result);
 });
 
